@@ -1,5 +1,9 @@
 # RabbitMQ Cluster with Haproxy 
 
+### Required
+- [Docker Engine](https://docs.docker.com/engine/installation/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+
 ### Run
 
 ```
