@@ -8,6 +8,8 @@ rabbit1:
   environment:
     - RABBITMQ_ERLANG_COOKIE="abcdefg"
   volumes:
+    - /srv/rabbitmq/rabbit1/lib:/var/lib/rabbitmq
+    - /srv/rabbitmq/rabbit1/log:/var/log/rabbitmq
     - /etc/timezone:/etc/timezone
     - /etc/localtime:/etc/localtime:ro 
 
@@ -25,6 +27,8 @@ rabbit2:
     - CLUSTERED=true
     - CLUSTER_WITH=rabbit1
   volumes:
+    - /srv/rabbitmq/rabbit2/lib:/var/lib/rabbitmq
+    - /srv/rabbitmq/rabbit2/log:/var/log/rabbitmq
     - /etc/timezone:/etc/timezone
     - /etc/localtime:/etc/localtime:ro
 
@@ -44,6 +48,8 @@ rabbit3:
     - CLUSTER_WITH=rabbit1
 
   volumes:
+    - /srv/rabbitmq/rabbit3/lib:/var/lib/rabbitmq
+    - /srv/rabbitmq/rabbit3/log:/var/log/rabbitmq
     - /etc/timezone:/etc/timezone
     - /etc/localtime:/etc/localtime:ro
 
