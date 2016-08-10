@@ -1,0 +1,60 @@
+rabbit1:
+  image: bijukunjummen/rabbitmq-server
+  ports:
+    - 15672:15672  # management port (guest:guest)
+    #- 5673:5672   # amqp port
+    #- 25672:25672 # cluster port
+  hostname: rabbit1
+  environment:
+    - RABBITMQ_ERLANG_COOKIE="abcdefg"
+  volumes:
+    - /etc/timezone:/etc/timezone
+    - /etc/localtime:/etc/localtime:ro 
+
+rabbit2:
+  image: bijukunjummen/rabbitmq-server
+  ports:
+    - 15673:15672  # management port (guest:guest)
+    #- 5674:5672   # amqp port
+    #- 25673:25672 # cluster port
+  hostname: rabbit2
+  links:
+    - rabbit1
+  environment:
+    - RABBITMQ_ERLANG_COOKIE="abcdefg"
+    - CLUSTERED=true
+    - CLUSTER_WITH=rabbit1
+  volumes:
+    - /etc/timezone:/etc/timezone
+    - /etc/localtime:/etc/localtime:ro
+
+rabbit3:
+  image: bijukunjummen/rabbitmq-server
+  ports:
+    - 15674:15672  # management port (guest:guest)
+    #- 5675:5672   # amqp port
+    #- 25674:25672 # cluster port
+  hostname: rabbit3
+  links:
+    - rabbit1
+    - rabbit2
+  environment:
+    - RABBITMQ_ERLANG_COOKIE="abcdefg"
+    - CLUSTERED=true
+    - CLUSTER_WITH=rabbit1
+
+  volumes:
+    - /etc/timezone:/etc/timezone
+    - /etc/localtime:/etc/localtime:ro
+
+haproxy:
+  image: haproxy
+  ports:
+    - 5672:5672
+    - 20000:20000
+  links:
+    - rabbit1
+    - rabbit2
+    - rabbit3
+  volumes:
+    - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg  
