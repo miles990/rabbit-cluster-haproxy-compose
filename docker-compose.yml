@@ -1,5 +1,6 @@
 rabbit1:
-  image: bijukunjummen/rabbitmq-server
+  #image: bijukunjummen/rabbitmq-server
+  image: rabbitmq-server
   ports:
     - 15672:15672  # management port (guest:guest)
     #- 5673:5672   # amqp port
@@ -7,14 +8,17 @@ rabbit1:
   hostname: rabbit1
   environment:
     - RABBITMQ_ERLANG_COOKIE="abcdefg"
+    - CLUSTERED=true
   volumes:
-    - /srv/rabbitmq/rabbit1/lib:/var/lib/rabbitmq
-    - /srv/rabbitmq/rabbit1/log:/var/log/rabbitmq
+    #- /srv/rabbitmq/rabbit1/lib:/var/lib/rabbitmq
+    #- /srv/rabbitmq/rabbit1/log:/var/log/rabbitmq
     - /etc/timezone:/etc/timezone
-    - /etc/localtime:/etc/localtime:ro 
+    - /etc/localtime:/etc/localtime:ro
+  #command: rabbitmq-plugins enable rabbitmq_consistent_hash_exchange 
 
 rabbit2:
-  image: bijukunjummen/rabbitmq-server
+  #image: bijukunjummen/rabbitmq-server
+  image: rabbitmq-server
   ports:
     - 15673:15672  # management port (guest:guest)
     #- 5674:5672   # amqp port
@@ -26,14 +30,17 @@ rabbit2:
     - RABBITMQ_ERLANG_COOKIE="abcdefg"
     - CLUSTERED=true
     - CLUSTER_WITH=rabbit1
+    - RAM_NODE=true
   volumes:
-    - /srv/rabbitmq/rabbit2/lib:/var/lib/rabbitmq
-    - /srv/rabbitmq/rabbit2/log:/var/log/rabbitmq
+    #- /srv/rabbitmq/rabbit2/lib:/var/lib/rabbitmq
+    #- /srv/rabbitmq/rabbit2/log:/var/log/rabbitmq
     - /etc/timezone:/etc/timezone
     - /etc/localtime:/etc/localtime:ro
+  #command: rabbitmq-plugins enable rabbitmq_consistent_hash_exchange
 
 rabbit3:
-  image: bijukunjummen/rabbitmq-server
+  #image: bijukunjummen/rabbitmq-server
+  image: rabbitmq-server
   ports:
     - 15674:15672  # management port (guest:guest)
     #- 5675:5672   # amqp port
@@ -48,10 +55,11 @@ rabbit3:
     - CLUSTER_WITH=rabbit1
 
   volumes:
-    - /srv/rabbitmq/rabbit3/lib:/var/lib/rabbitmq
-    - /srv/rabbitmq/rabbit3/log:/var/log/rabbitmq
+    #- /srv/rabbitmq/rabbit3/lib:/var/lib/rabbitmq
+    #- /srv/rabbitmq/rabbit3/log:/var/log/rabbitmq
     - /etc/timezone:/etc/timezone
     - /etc/localtime:/etc/localtime:ro
+  #command: rabbitmq-plugins enable rabbitmq_consistent_hash_exchange
 
 haproxy:
   image: haproxy
