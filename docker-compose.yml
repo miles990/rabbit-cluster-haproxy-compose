@@ -14,6 +14,7 @@ rabbit1:
     #- /srv/rabbitmq/rabbit1/log:/var/log/rabbitmq
     - /etc/timezone:/etc/timezone
     - /etc/localtime:/etc/localtime:ro
+  restart: always
   #command: rabbitmq-plugins enable rabbitmq_consistent_hash_exchange 
 
 rabbit2:
@@ -36,6 +37,7 @@ rabbit2:
     #- /srv/rabbitmq/rabbit2/log:/var/log/rabbitmq
     - /etc/timezone:/etc/timezone
     - /etc/localtime:/etc/localtime:ro
+  restart: always
   #command: rabbitmq-plugins enable rabbitmq_consistent_hash_exchange
 
 rabbit3:
@@ -59,6 +61,7 @@ rabbit3:
     #- /srv/rabbitmq/rabbit3/log:/var/log/rabbitmq
     - /etc/timezone:/etc/timezone
     - /etc/localtime:/etc/localtime:ro
+  restart: always
   #command: rabbitmq-plugins enable rabbitmq_consistent_hash_exchange
 
 haproxy:
@@ -72,3 +75,4 @@ haproxy:
     - rabbit3
   volumes:
     - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg  
+  restart: always
